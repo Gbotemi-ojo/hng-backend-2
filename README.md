@@ -4,7 +4,7 @@
 Gbotex_Latex
 
 # Endpoint
-
+https://hng-task2-backend-nyoj.onrender.com/api
 
 # packages used
 This project was made with express.js and mongodb for database
