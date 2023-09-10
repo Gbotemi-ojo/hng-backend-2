@@ -40,7 +40,7 @@ app.use(function (err, req, res, next) {
 
 const port = 5000;
 app.listen(port, () => {
-  console.log(`app is listening at port ${port}`)
+  console.log(`app is listening at port ${port}`);
 })
 
 module.exports = app;
