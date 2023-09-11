@@ -27,9 +27,8 @@ exports.Createuser = [
                 }
                 else {
                     await user.save();
-                    res.status(200).json({
-                        message: "success baby!"
-                    });
+                    res.status(200).json(
+                       user);
                 }
             }
         } catch (error) {
@@ -69,8 +68,8 @@ exports.updateUser = [
                 return;
             }
             else {
-                await userModel.findByIdAndUpdate({ _id: req.params.user_id }, { name: req.body.name }, { new: true });
-                res.json("success");
+             const updatedUser = await userModel.findByIdAndUpdate({ _id: req.params.user_id }, { name: req.body.name }, { new: true });
+                res.json(updatedUser);
             }
         }
     })
