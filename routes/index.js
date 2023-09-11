@@ -9,8 +9,8 @@ router.get('/', function(req, res, next) {
 
 // hng requirements
 router.post("/api", userController.Createuser);
-router.get("/api",userController.getUser);
-router.put("/api",userController.updateUser);
-router.delete("/api",userController.deleteUser);
+router.get("/api/:user_id",userController.getUser);
+router.put("/api/:user_id",userController.updateUser);
+router.delete("/api/:user_id",userController.deleteUser);
 
 module.exports = router;

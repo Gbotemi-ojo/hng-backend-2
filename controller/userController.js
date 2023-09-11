@@ -38,27 +38,14 @@ exports.Createuser = [
     })];
 
 exports.getUser = [
-    body("name", "name must not be empty")
-        .trim()
-        .isLength({ min: 1 })
-        .isString(),
     asyncHandler(async (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            res.status(403).json({
-                error: errors.array()
-            });
+        const user = await userModel.findOne({ _id: req.params.user_id });
+        if (!user) {
+            res.status(403).json("There is no such user with provided name");
             return;
         }
         else {
-            const user = await userModel.findOne({ name: req.body.name });
-            if (!user) {
-                res.status(403).json("There is no such user with provided name");
-                return;
-            }
-            else {
-                res.status(200).json(user);
-            }
+            res.status(200).json(user);
         }
     })];
 
@@ -67,9 +54,6 @@ exports.updateUser = [
         .trim()
         .isLength({ min: 1 })
         .isString(),
-    body("id", "id must not be empty")
-        .trim()
-        .isLength({ min: 1 }),
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -79,40 +63,29 @@ exports.updateUser = [
             return;
         }
         else {
-            const user_Exists = userModel.findOne({ _id: req.body.id })
+            const user_Exists = userModel.findOne({ _id: req.params.user_id })
             if (!user_Exists) {
                 res.status(401).json("user does not exist");
                 return;
             }
             else {
-                await userModel.findByIdAndUpdate({_id : req.body.id}, {name : req.body.name}, { new: true });
+                await userModel.findByIdAndUpdate({ _id: req.params.user_id }, { name: req.body.name }, { new: true });
                 res.json("success");
             }
         }
     })
 ]
 exports.deleteUser = [
-    body("id", "id must not be empty")
-        .trim()
-        .isLength({ min: 1 }),
     asyncHandler(async (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            res.status(403).json({
-                error: errors.array()
-            });
+        const user_Exists = userModel.findOne({ _id: req.params.user_id });
+        if (!user_Exists) {
+            res.json("user does not exist");
             return;
         }
         else {
-            const user_Exists = userModel.findOne({ _id: req.body.id });
-            if (!user_Exists) {
-                res.json("user does not exist");
-                return;
-            }
-            else {
-                await userModel.findByIdAndRemove(req.body.id);
-                res.json("user deleted")
-            }
+            await userModel.findByIdAndRemove(req.params.user_id);
+            res.json("user deleted")
         }
+
     })
 ]
